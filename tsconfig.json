@@ -16,6 +16,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-carousel": [
+        "dist/ngx-carousel"
+      ],
+      "ngx-carousel/*": [
+        "dist/ngx-carousel/*"
+      ]
+    }
   }
 }
