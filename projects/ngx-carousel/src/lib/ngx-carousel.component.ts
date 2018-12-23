@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -17,7 +17,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
     <a class="carousel-control-prev" (click)="pre()" role="button" data-slide="prev">
       <ng-content select="[pre-items]"></ng-content>
     </a>
-    <a class="carousel-control-next" (click)="next()" role="button" data-slide="next">
+    <a class="carousel-control-next" (click)="next($event)" role="button" data-slide="next">
       <ng-content select="[next-items]"></ng-content>
     </a>
   </div>
@@ -26,15 +26,18 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
   `
 })
 export class NgxCarouselComponent {
+  @Input() itemsPerSlide;
   currentActivePageIndex = 0;
-  itemPerPage = 4;
 
   @ViewChild('ngxCarousel') ngxCarousel: ElementRef;
 
-  next() {
+  next(event) {
     const totalItems = (this.ngxCarousel.nativeElement as HTMLElement).children.length;
-    let nextActivePageIndex = this.currentActivePageIndex + this.itemPerPage;
-    if (nextActivePageIndex >= (totalItems)) {
+
+    let nextActivePageIndex = this.currentActivePageIndex + this.itemsPerSlide;
+
+
+    if (nextActivePageIndex > (totalItems)) {
       nextActivePageIndex = 0;
     }
     if (nextActivePageIndex > (totalItems - this.currentActivePageIndex)) {
@@ -43,17 +46,19 @@ export class NgxCarouselComponent {
     this.currentActivePageIndex = nextActivePageIndex;
     this.ngxCarousel.nativeElement.scrollLeft =
       ((this.ngxCarousel.nativeElement as HTMLElement).children[this.currentActivePageIndex] as any).offsetLeft;
-
+console.log(this.currentActivePageIndex);
   }
+
+
   pre() {
     const totalItems = (this.ngxCarousel.nativeElement as HTMLElement).children.length;
-    let nextActivePageIndex = this.currentActivePageIndex - this.itemPerPage;
+    let nextActivePageIndex = this.currentActivePageIndex - this.itemsPerSlide;
     console.log(nextActivePageIndex);
     if (nextActivePageIndex < 0 && this.currentActivePageIndex + nextActivePageIndex >= 0) {
       nextActivePageIndex = 0;
     }
     if (nextActivePageIndex < 0) {
-      nextActivePageIndex = (totalItems - 1) - this.itemPerPage;
+      nextActivePageIndex = (totalItems ) - this.itemsPerSlide;
     }
 
     this.currentActivePageIndex = nextActivePageIndex;
