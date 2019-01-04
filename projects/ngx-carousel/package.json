@@ -1,10 +1,11 @@
 {
   "name": "ngx-carousel-library",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "author": "Ihab Salem",
   "description": "view mulitple cards in the carousels",
   "peerDependencies": {
     "@angular/common": "^7.0.0",
     "@angular/core": "^7.0.0"
-  }
+  },
+  "dependencies": {}
 }

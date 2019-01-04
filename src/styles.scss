@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+
+.carousel {
+  height: 82px;
+  display: block;
+
+}
+// .carousel-inner {
+//   // scroll-behavior: smooth;
+//   .carousel-item {
+//     display: block;
+//   }
+//   .carousel-item.animation {
+//     animation: moveOut 1550ms ease-in-out;
+//   }
+
+//   .carousel-item.animation-reverse {
+//     animation: moveOutReverse 1550ms ease-in-out;
+//   }
+// }
+// @keyframes moveOutReverse {
+//   0% {
+//     width: 0%;
+//     min-width: 0px;
+//     max-width: 0px;
+//     padding: 0px;
+//     opacity: 0;
+//   }
+
+//   100% {
+//   }
+// }
+
+// @keyframes moveOut {
+//   0% {
+//     opacity: 1;
+//   }
+
+//   100% {
+//     width: 0%;
+//     min-width: 0px;
+//     max-width: 0px;
+//     padding: 0px;
+//     opacity: 0;
+//   }
+// }

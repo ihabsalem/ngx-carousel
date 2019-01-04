@@ -10,7 +10,8 @@ import { NgxCarouselModule } from 'projects/ngx-carousel/src/public_api';
   ],
   imports: [
     BrowserModule,
-    NgxCarouselModule
+    NgxCarouselModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

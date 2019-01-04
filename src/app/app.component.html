@@ -1,11 +1,52 @@
-<ngx-carousel [itemsPerSlide]="4">
-  <div *ngFor="let item of itemList" items-list class="h-100 carousel-item col-md-{{12 / 4}} active">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Card -{{item}}</h4>
+<!-- <div class="container text-center my-3">
+  <h2>Bootstrap 4 Multiple Item Carousel</h2>
+  <div class="row mx-auto my-auto">
+    <div  id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
+      <div #carousel class="carousel-inner " role="listbox">
+        <div #carouselItem  class="carousel-item active">
+          <img class="d-block col-4 img-fluid" src="http://placehold.it/350x180?text=1">
+        </div>
+        <div #carouselItem  class="carousel-item active">
+          <img class="d-block col-4 img-fluid" src="http://placehold.it/350x180?text=2">
+        </div>
+        <div #carouselItem  class="carousel-item active">
+          <img class="d-block col-4 img-fluid" src="http://placehold.it/350x180?text=3">
+        </div>
+        <div #carouselItem  class="carousel-item active">
+          <img class="d-block col-4 img-fluid" src="http://placehold.it/350x180?text=4">
+        </div>
+        <div #carouselItem  class="carousel-item active">
+          <img class="d-block col-4 img-fluid" src="http://placehold.it/350x180?text=5">
+        </div>
+        <div #carouselItem  class="carousel-item active">
+          <img class="d-block col-4 img-fluid" src="http://placehold.it/350x180?text=6">
+        </div>
       </div>
+      <a class="carousel-control-prev" (click)="pre()" href="#recipeCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" (click)="next()" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
     </div>
   </div>
+  <h4>Advances one slide at a time</h4>
+</div> -->
+
+
+
+
+<ngx-carousel [dataSource]="itemList" [config]="config"
+style="height:82px">
+  <ng-template let-item1>
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Card - {{item1}} </h4>
+      </div>
+    </div>
+  </ng-template>
   <span pre-items>pre</span>
   <span next-items>next</span>
 </ngx-carousel>
