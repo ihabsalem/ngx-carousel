@@ -6,7 +6,9 @@ import {
   Input,
   ContentChild,
   TemplateRef,
-  AfterViewInit
+  AfterViewInit,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { NgxCarouselsConfig } from '../public_api';
 import { WindowEventsService } from './window-events.service';
@@ -31,9 +33,10 @@ import { NgxMediaQuery } from '../models/carousel';
           <div
             *ngFor="let item of dataSource"
             items-list
-            class="h-100 carousel-item {{ item }} slide col-md-{{
-              12 / numberOfCardsPerPage
-            }}"
+            class="h-100 carousel-item {{ item }} slide"
+            [style.marginLeft.px]="cardOffset"
+            [style.marginRight.px]="cardOffset"
+            [style.minWidth.px]="cardWidth"
           >
             <ng-template
               [ngTemplateOutlet]="itemTemplate"
@@ -48,7 +51,6 @@ import { NgxMediaQuery } from '../models/carousel';
           role="button"
           data-slide="prev"
         >
-          {{ numberOfCardsPerPage }}
           <ng-content select="[pre-items]"></ng-content>
         </a>
         <a
@@ -63,16 +65,23 @@ import { NgxMediaQuery } from '../models/carousel';
     </div>
   `
 })
-export class NgxCarouselComponent implements AfterViewInit, OnInit {
+export class NgxCarouselComponent implements AfterViewInit, OnInit, OnChanges {
   state = '';
   @Input() config: NgxCarouselsConfig;
   @Input() dataSource: any[];
   currentActivePageIndex = 0;
   @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
   @ViewChild('ngxCarousel') ngxCarousel: ElementRef;
-  numberOfCardsPerPage = 4;
-  width = 412;
+  numberOfCardsPerPage = 5;
+  cardWidth = 0;
+  cardOffset = 0;
   constructor(private windowEventsService: WindowEventsService) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    this.calculateCardDimentions();
+  }
+  OnChanges(changes: SimpleChanges): void {
+    this.calculateCardDimentions();
+  }
 
   ngOnInit(): void {
     this.windowEventsService.dimensions$.subscribe(dimention => {
@@ -82,36 +91,59 @@ export class NgxCarouselComponent implements AfterViewInit, OnInit {
   }
   ngAfterViewInit(): void {
     this.setNumberOfItemsOnResizing(this.windowEventsService.getWindowWidth());
+    this.calculateCardDimentions();
 
-    console.log(this.ngxCarousel.nativeElement.children);
+    // Listen to changes on the elements in the page that affect layout
+    const observer = new MutationObserver(() => {
+      console.log('element width changed, so we are setting the dimentions');
+      this.setNumberOfItemsOnResizing(this.windowEventsService.getWindowWidth());
+    });
+    observer.observe(this.ngxCarousel.nativeElement, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+      subtree: true
+    });
   }
-
+  calculateCardDimentions() {
+    const width = (this.ngxCarousel.nativeElement as HTMLElement).clientWidth;
+    console.log('width, width', width);
+    this.cardWidth =
+      width / this.numberOfCardsPerPage -
+      (this.config.marginBetweenCards || 20);
+    this.cardOffset = this.config.marginBetweenCards
+      ? this.config.marginBetweenCards / 2
+      : 10;
+  }
   setNumberOfItemsOnResizing(minWidth) {
     if (!this.config) {
       return;
     }
-    console.log('---', this.numberOfCardsPerPage, this.config);
 
     if (minWidth <= NgxMediaQuery.XS) {
       this.numberOfCardsPerPage = this.config.grid.xs;
       console.log('00', this.numberOfCardsPerPage, this.config);
+      this.calculateCardDimentions();
+
       return;
     }
     if (minWidth <= NgxMediaQuery.SM) {
       this.numberOfCardsPerPage = this.config.grid.sm;
       console.log('11', this.numberOfCardsPerPage, this.config);
+      this.calculateCardDimentions();
+
       return;
     }
     if (minWidth <= NgxMediaQuery.LG) {
       this.numberOfCardsPerPage = this.config.grid.lg;
       console.log('22', this.numberOfCardsPerPage, this.config);
+      this.calculateCardDimentions();
+
       return;
     }
-    if (minWidth <= NgxMediaQuery.XL) {
-      this.numberOfCardsPerPage = this.config.grid.xl;
-      console.log('mi32nwi', this.numberOfCardsPerPage, this.config);
-      return;
-    }
+    this.numberOfCardsPerPage = this.config.grid.xl;
+    this.calculateCardDimentions();
+    console.log('mi32nwi', this.numberOfCardsPerPage, this.config);
   }
 
   next(event) {
