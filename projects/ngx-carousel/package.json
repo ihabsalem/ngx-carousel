@@ -1,6 +1,6 @@
 {
   "name": "ngx-carousel-library",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "Ihab Salem",
   "description": "view mulitple cards in the carousels",
   "peerDependencies": {

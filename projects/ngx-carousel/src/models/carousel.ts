@@ -3,7 +3,6 @@ export interface NgxCarouselsConfig {
     slidePerScroll?: number;
     marginBetweenCards?: number;
     RTL?: boolean;
-    cardWidth: number;
 }
 
 export const NgxMediaQuery = {

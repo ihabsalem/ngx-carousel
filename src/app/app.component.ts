@@ -22,7 +22,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   config: NgxCarouselsConfig = {
     grid: { xs: 1, sm: 2, md: 3, lg: 4, xl: 6 },
     slidePerScroll: 2,
-    cardWidth: 244
   };
   ngAfterViewInit(): void {}
   next() {

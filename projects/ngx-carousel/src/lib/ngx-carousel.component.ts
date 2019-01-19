@@ -19,49 +19,43 @@ import { NgxMediaQuery } from '../models/carousel';
   selector: 'ngx-carousel',
   styleUrls: ['./ngx-carousel.component.scss'],
   template: `
-    <div class="container-fluid">
+    <div class="carousel">
       <div
-        style="overflow: hidden;"
-        class="carousel slide"
-        data-ride="carousel"
+        #ngxCarousel
+        id="ngxCarousel"
+        class="carousel-inner   w-100 mx-auto flex-nowrap"
       >
         <div
-          #ngxCarousel
-          id="ngxCarousel"
-          class="carousel-inner row w-100 mx-auto flex-nowrap"
+          *ngFor="let item of dataSource"
+          items-list
+          class="h-100 carousel-item {{ item }} slide"
+          [style.marginLeft.px]="cardOffset"
+          [style.marginRight.px]="cardOffset"
+          [style.minWidth.px]="cardWidth"
         >
-          <div
-            *ngFor="let item of dataSource"
-            items-list
-            class="h-100 carousel-item {{ item }} slide"
-            [style.marginLeft.px]="cardOffset"
-            [style.marginRight.px]="cardOffset"
-            [style.minWidth.px]="cardWidth"
-          >
-            <ng-template
-              [ngTemplateOutlet]="itemTemplate"
-              [ngTemplateOutletContext]="{ $implicit: item }"
-            ></ng-template>
-            <ng-content select="[ngx-item]"></ng-content>
-          </div>
+          <ng-template
+            [ngTemplateOutlet]="itemTemplate"
+            [ngTemplateOutletContext]="{ $implicit: item }"
+          ></ng-template>
+          <ng-content select="[ngx-item]"></ng-content>
         </div>
-        <a
-          class="carousel-control-prev"
-          (click)="pre()"
-          role="button"
-          data-slide="prev"
-        >
-          <ng-content select="[pre-items]"></ng-content>
-        </a>
-        <a
-          class="carousel-control-next"
-          (click)="next($event)"
-          role="button"
-          data-slide="next"
-        >
-          <ng-content select="[next-items]"></ng-content>
-        </a>
       </div>
+      <a
+        class="carousel-control-prev"
+        (click)="pre()"
+        role="button"
+        data-slide="prev"
+      >
+        <ng-content select="[pre-items]"></ng-content>
+      </a>
+      <a
+        class="carousel-control-next"
+        (click)="next($event)"
+        role="button"
+        data-slide="next"
+      >
+        <ng-content select="[next-items]"></ng-content>
+      </a>
     </div>
   `
 })
@@ -96,14 +90,35 @@ export class NgxCarouselComponent implements AfterViewInit, OnInit, OnChanges {
     // Listen to changes on the elements in the page that affect layout
     const observer = new MutationObserver(() => {
       console.log('element width changed, so we are setting the dimentions');
-      this.setNumberOfItemsOnResizing(this.windowEventsService.getWindowWidth());
+      this.setNumberOfItemsOnResizing(
+        this.windowEventsService.getWindowWidth()
+      );
     });
-    observer.observe(this.ngxCarousel.nativeElement, {
-      attributes: true,
-      childList: true,
-      characterData: true,
-      subtree: true
-    });
+    if (
+      (this.ngxCarousel.nativeElement as HTMLElement).parentElement
+        .parentElement.parentElement
+    ) {
+      observer.observe(
+        (this.ngxCarousel.nativeElement as HTMLElement).parentElement
+          .parentElement.parentElement,
+        {
+          attributes: true,
+          childList: true,
+          characterData: true,
+          subtree: true
+        }
+      );
+    }
+    observer.observe(
+      (this.ngxCarousel.nativeElement as HTMLElement).parentElement
+        .parentElement,
+      {
+        attributes: true,
+        childList: true,
+        characterData: true,
+        subtree: true
+      }
+    );
   }
   calculateCardDimentions() {
     const width = (this.ngxCarousel.nativeElement as HTMLElement).clientWidth;
