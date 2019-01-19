@@ -33,32 +33,27 @@ export class NgxCarouselComponent {
 
   next(event) {
     const totalItems = (this.ngxCarousel.nativeElement as HTMLElement).children.length;
-
     let nextActivePageIndex = this.currentActivePageIndex + this.itemsPerSlide;
-
-
-    if (nextActivePageIndex > (totalItems)) {
+    if ((nextActivePageIndex) >= (totalItems)) {
       nextActivePageIndex = 0;
     }
-    if (nextActivePageIndex > (totalItems - this.currentActivePageIndex)) {
+    if (nextActivePageIndex > (totalItems - this.itemsPerSlide)) {
       nextActivePageIndex = totalItems - 1;
     }
     this.currentActivePageIndex = nextActivePageIndex;
     this.ngxCarousel.nativeElement.scrollLeft =
       ((this.ngxCarousel.nativeElement as HTMLElement).children[this.currentActivePageIndex] as any).offsetLeft;
-console.log(this.currentActivePageIndex);
   }
 
 
   pre() {
     const totalItems = (this.ngxCarousel.nativeElement as HTMLElement).children.length;
     let nextActivePageIndex = this.currentActivePageIndex - this.itemsPerSlide;
-    console.log(nextActivePageIndex);
     if (nextActivePageIndex < 0 && this.currentActivePageIndex + nextActivePageIndex >= 0) {
       nextActivePageIndex = 0;
     }
     if (nextActivePageIndex < 0) {
-      nextActivePageIndex = (totalItems ) - this.itemsPerSlide;
+      nextActivePageIndex = (totalItems ) - this.itemsPerSlide - (nextActivePageIndex === 0 ? 0 : 1);
     }
 
     this.currentActivePageIndex = nextActivePageIndex;
